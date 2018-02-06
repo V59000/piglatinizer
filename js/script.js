@@ -6,20 +6,33 @@
 // CREATE THE FUNCTIONS BELOW
 
 // Document Ready Function. All of your jQuery should go in here. 
-$( document ).ready(function() {
-$("#btn").click(function(){
-	var x = $("#info").val();
-	var newWord = sentenceToPigLatin(x);
-	$("#result").text(newWord);
-});
-
-});
-
+function indexOfFirstVowel(word) {
+  var vowelArray = ["a","e","i","o","u"];
+  for (var i = 0; i < word.length; i++) {
+//    console.log(vowelArray.indexOf(word[i]));
+    if(vowelArray.indexOf(word[i]) > -1) {
+      return i;
+    }
+  }
+}
 
 // Create the wordToPigLatin function that takes a word as a parameter and returns a transfromed word. 
 
 function wordToPigLatin (word){
-    return word + "ay";
+    if(word.charAt(0) === "a" ||
+    word.charAt(0) === "e"||
+    word.charAt(0) === "i"||
+    word.charAt(0) === "o"||
+    word.charAt(0) === "u"){
+    return	word + "ay";
+    }
+    else{
+    	 var firstVowelIndex = indexOfFirstVowel(word);
+        var changedWord = word.substr(firstVowelIndex) + word.substr(0,firstVowelIndex) + "ay";
+        return changedWord;
+    }
+    
+    
 }
 
 // Create the sentenceToPigLatin function that takes a sentence as a parameter
@@ -27,12 +40,19 @@ function wordToPigLatin (word){
 	//It should return a transfromed sentance
 function sentenceToPigLatin (sentence){
     var words = sentence.split(" ");
+    var final = [];
     for (var i = 0; i < words.length; i++ ){
-    //newArray.push(wordToPigLatin(words[i]));
     var word = words[i];
-    var newArray = wordToPigLatin(word);
-    words[i] = newArray;
-    }
-   
-    return newArray;
+    var newArray = final.push(wordToPigLatin(word) + " ");
+   }
+    
+    return final;
 }
+
+$( document ).ready(function() {
+$("#btn").click(function() {
+    var input = $("#info").val();
+    $("#result").html(sentenceToPigLatin(input));
+    });
+
+});
